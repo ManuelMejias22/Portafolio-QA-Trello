@@ -14,7 +14,7 @@ El alcance del proyecto abarca tres Historias de Usuario (Épica-gestión-de-tar
 * **Documentación y Matrices:** Google Sheets / Google Docs / Microsoft Excel.
 * **Gestión de Versiones:** Git & GitHub.
 * **Técnicas de Caja Negra:** Partición de Equivalencia, Análisis de Valores Límite, Pruebas de Transición de Estados.
-
+* **Testing de API & Automatización: Postman (Collection Runner, JavaScript Assertions, Environment Variables)
 ---
 
 ## Estructura del Repositorio
