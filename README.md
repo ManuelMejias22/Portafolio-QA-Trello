@@ -25,6 +25,7 @@ El proyecto está organizado de la siguiente manera para facilitar su revisión:
 * **`02-Matriz-Trazabilidad.xlsx`:** Matriz que vincula cada escenario de negocio extraído de las Historias de Usuario con sus respectivos Casos de Prueba (TC), garantizando una cobertura del 100%.
 * **`03-Casos-de-pruebas.xlsx`:** Set completo de Casos de Prueba detallados con precondiciones, pasos secuenciales, datos de prueba y resultados esperados.
 * **`04-Reporte-de-defecto.xlsx`:** Plantilla formal de reporte de bug que detalla un defecto crítico encontrado en el flujo de autoguardado de la interfaz.
+* **`05-Postman-API-Tests/`:** Colección exportada (Trello-API-Testing.json) y archivo de variables de entorno (Environment.json). Incluye tests de integración para endpoints de tarjetas (POST, PUT, DELETE, GET), aserciones dinámicas y scripts de setup/cleanup.
 
 ---
 
