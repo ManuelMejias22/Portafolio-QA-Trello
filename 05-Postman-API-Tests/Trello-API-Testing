@@ -1,0 +1,1054 @@
+{
+  "info": {
+    "_postman_id": "e7f757bc-08d4-4ec9-87c8-652fe6dc4175",
+    "name": "Trello-API-Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54459572"
+  },
+  "item": [
+    {
+      "name": "Configuracion previa",
+      "item": [
+        {
+          "name": "Tableros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.environment.set(\"Id-Tablero\", body[1].id);\r\n\r\npm.test(\" El nombre del tablero debe ser Trello-QA\", ()=> {\r\n    pm.expect(body[1].name).to.eql(\"Trello-QA\")\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/members/me/boards?key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "members",
+                "me",
+                "boards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Creacion-Lista-1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.environment.set(\"Id-Lista-1\", body.id);\r\n\r\npm.test(\"Status code es 200, Lista creada correctamente\", () => {\r\n    pm.response.to.have.status(200);\r\n});  "
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/lists?name=Lista-1&idBoard={{Id-Tablero}}&key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "lists"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Lista-1"
+                },
+                {
+                  "key": "idBoard",
+                  "value": "{{Id-Tablero}}"
+                },
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "HU-001 Creacion de Tarjetas",
+      "item": [
+        {
+          "name": "Tarjeta-Exitosa-Validando-Posicion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json()\r\nconst Titulo_Trajeta = pm.collectionVariables.get(\"Titulo\");\r\npm.test(\"el Titulo de la tarjeta debe ser el contenido de la variable Titulo\", ()=> {\r\n    pm.expect(body.name).to.eql(Titulo_Trajeta)\r\n    });\r\n\r\npm.test(\"el status code debe ser 200 OK\" , ()=> {\r\n    pm.response.to.have.status(200)\r\n});\r\n\r\npm.test(\"Se asigno un valor de posicion inicial valido\", () => {\r\n    pm.expect(body.pos).to.be.a(\"number\");\r\n    pm.expect(body.pos).to.be.above(0);\r\n});\r\n\r\npm.environment.set(\"posicion_tarjeta_1\", body.pos);\r\npm.environment.set(\"Id_tarjeta_1\", body.id);\r\n\r\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const nuevonombrerandom = pm.collectionVariables.replaceIn(\"{{$randomFirstName}}\")\r\n\r\npm.collectionVariables.set(\"Titulo\", nuevonombrerandom)  \r\n\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{Url-Base}}/cards?key={{Key}}&name={{Titulo}}&token={{Token}}&idList={{Id-Lista-1}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "name",
+                  "value": "{{Titulo}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "idList",
+                  "value": "{{Id-Lista-1}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tarjeta-Validando-Posicion-Lista-Con-Tarjeta-Creada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code es 200\", ()=> {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst pos_tarjeta = Number (pm.environment.get(\"posicion_tarjeta_1\")); // Obtenemos la posicion de la tarjeta anterior\r\npm.test(\"La posicion es mayor a la tarjeta anterior\", () => {\r\n    pm.expect(body.pos).to.be.a(\"number\");\r\n    pm.expect(body.pos).to.be.above(pos_tarjeta); \r\n});\r\n\r\npm.environment.set(\"Id_tarjeta_2\", body.id);"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\r\nconst nuevonombrerandom = pm.collectionVariables.replaceIn(\"{{$randomFirstName}}\")\r\n\r\npm.collectionVariables.set(\"Titulo2\", nuevonombrerandom) "
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards?key={{Key}}&name={{Titulo2}}&token={{Token}}&idList={{Id-Lista-1}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "name",
+                  "value": "{{Titulo2}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "idList",
+                  "value": "{{Id-Lista-1}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Tarjeta-Sin-Titulo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\npm.test(\"el status code debe ser 400 Bad Reques por falta de Titulo\" , ()=> {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.environment.set(\"Id_tarjeta_3\", body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Url-Base}}/cards?key={{Key}}&name=&token={{Token}}&idList={{Id-Lista-1}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "name",
+                  "value": ""
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "idList",
+                  "value": "{{Id-Lista-1}}"
+                }
+              ]
+            },
+            "description": "BUG CONOCIDO: La API no valida la obligatoriedad del nombre y responde 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "Tarjeta-Titulo-Espacios-Blanco",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\npm.test(\"el status code debe ser 400 Bad Reques al bloquer la creacion del titulo solo con espacios en blanco\" , ()=> {\r\n    pm.response.to.have.status(400);\r\n});\r\n\r\npm.environment.set(\"Id_tarjeta_4\", body.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards?key={{Key}}&name=       &token={{Token}}&idList={{Id-Lista-1}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "name",
+                  "value": "       "
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "idList",
+                  "value": "{{Id-Lista-1}}"
+                }
+              ]
+            },
+            "description": "BUG CONOCIDO: La API no valida la obligatoriedad del nombre y responde 200 OK."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "HU-002 Modificacion de Tarjetas",
+      "item": [
+        {
+          "name": "Modificar-Titulo-Descripcion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code debe ser 200 OK\", () => {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst New_titulo = pm.collectionVariables.get(\"Nuevotitulo\");\r\nconst New_descripcion = pm.collectionVariables.get(\"Descripcion\");\r\n\r\npm.test(\"El titulo y la descripcion de la tarjeta han sido editados exitosamente\", () => {\r\n    pm.expect(body.name).to.eql(New_titulo)\r\n    pm.expect(body.desc).to.eql(New_descripcion)        \r\n});\r\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const Cambionombrerandom = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r\npm.collectionVariables.set(\"Nuevotitulo\", Cambionombrerandom)    \r\n\r\nconst Descripcionrandom = pm.variables.replaceIn(\"{{$randomCountry}}\")\r\npm.collectionVariables.set(\"Descripcion\", Descripcionrandom)   "
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_1}}?key={{Key}}&token={{Token}}&name={{Nuevotitulo}}&desc={{Descripcion}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_1}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "{{Nuevotitulo}}"
+                },
+                {
+                  "key": "desc",
+                  "value": "{{Descripcion}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Vaciar-Descripcion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code debe ser 200 OK\", () => {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La tarjeta no debería tener ninguna descrpción\", () => {\r\n    pm.expect(body.desc).to.eql(\"\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_1}}?key={{Key}}&token={{Token}}&desc=",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_1}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "desc",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar-Titulo-Caracteres-Especiales",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code debe ser 200 OK\", () => {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Se actualizo el nombre de la tarjeta con caracteres especiales\", () => {\r\n    pm.expect(body.name).to.eql(\"$$$****!!!!!\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_2}}?key={{Key}}&token={{Token}}&name=$$$****!!!!!&=",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_2}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "$$$****!!!!!"
+                },
+                {
+                  "key": "",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Put-Modificar-Titulo-Dejandolo-Vacio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code debe ser 400 Bad Request, porque el titulo de la tarjeta no debe estar vacío\", () => {\r\n    pm.response.to.have.status(400);\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_2}}?key={{Key}}&token={{Token}}&name=&desc=Editor&=",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_2}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "name",
+                  "value": ""
+                },
+                {
+                  "key": "desc",
+                  "value": "Editor"
+                },
+                {
+                  "key": "",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "BUG CONOCIDO: La API no valida la obligatoriedad del nombre y responde 200 OK"
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar-Titulo-Solo-Con-Espacios-Blanco",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code debe ser 400 Bad Request, porque el titulo de la tarjeta no debe ser creado con espacios en blanco\", () => {\r\n    pm.response.to.have.status(400);\r\n});\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_2}}?key={{Key}}&token={{Token}}&name=         &=",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_2}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "         "
+                },
+                {
+                  "key": "",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "BUG CONOCIDO: La API no valida la obligatoriedad del nombre y responde 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "Error-Modificar-Tarjeta-Inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400 o 404 porque la tarjeta no existe\", () => {\r\n    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r\n});\r\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const IDtarjetainexistente = \"6a915df390a1f507337f0316\"\r\n\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{IDtarjetainexistente}}?key={{Key}}&token={{Token}}&name=Juan Jose Perez &desc=Editor",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{IDtarjetainexistente}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "name",
+                  "value": "Juan Jose Perez "
+                },
+                {
+                  "key": "desc",
+                  "value": "Editor"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "HU-003 Archivado y Eliminacion de Tarjetas",
+      "item": [
+        {
+          "name": "Archivar-Tarjeta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code es 200 OK\", () => {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La tarjeta se archivo correctamente\", () => {\r\n    pm.expect(body.closed).to.eql(true);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_2}}?key={{Key}}&token={{Token}}&closed=true",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_2}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "closed",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Desarchivar-Tarjeta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();\r\n\r\npm.test(\"Status code es 200 OK\", () => {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La tarjeta se restaura al tablero correctamente\", () => {\r\n    pm.expect(body.closed).to.eql(false);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_2}}?key={{Key}}&token={{Token}}&closed=false",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_2}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "closed",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Error-Archivar-Tarjeta-Inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400 o 404 porque la tarjeta no existe\", () => {\r\n    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{IDtarjetainexistente}}?key={{Key}}&token={{Token}}&closed=true",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{IDtarjetainexistente}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "closed",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete-Tarjeta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"La tarjeta fue eliminada exitosamente (200 OK)\", () => {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_2}}?key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_2}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete-Tarjeta-Inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"La respuesta es 400 o 404 porque la tarjeta no existe\", () => {\r\n    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{IDtarjetainexistente}}?key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{IDtarjetainexistente}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Limpieza coleccion",
+      "item": [
+        {
+          "name": "Eliminado-Tarjeta-1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code es 200, la tarjeta es eliminada correctamente\", () => {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_1}}?key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_1}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminado-Tarjeta-3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code es 200, la tarjeta es eliminada correctamente\", () => {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_3}}?key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_3}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminado-Tarjeta-4",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code es 200, la tarjeta es eliminada correctamente\", () => {\r\n    pm.response.to.have.status(200);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/cards/{{Id_tarjeta_4}}?key={{Key}}&token={{Token}}",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "cards",
+                "{{Id_tarjeta_4}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Archivado Lista_1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  " const body = pm.response.json();\r\n \r\n pm.test(\"Status code es 200, la lista es archivada correctamente\", () => {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"La lista se ha archivado correctamente\", () => {\r\n    pm.expect(body.closed).to.be.true;\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{Url-Base}}/list/{{Id-Lista-1}}?key={{Key}}&token={{Token}}&closed=true",
+              "host": [
+                "{{Url-Base}}"
+              ],
+              "path": [
+                "list",
+                "{{Id-Lista-1}}"
+              ],
+              "query": [
+                {
+                  "key": "key",
+                  "value": "{{Key}}"
+                },
+                {
+                  "key": "token",
+                  "value": "{{Token}}"
+                },
+                {
+                  "key": "closed",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "Titulo",
+      "value": ""
+    },
+    {
+      "key": "Nuevotitulo",
+      "value": ""
+    },
+    {
+      "key": "Descripcion",
+      "value": ""
+    },
+    {
+      "key": "Titulo2",
+      "value": ""
+    }
+  ]
+}
+
+
+
+
+
