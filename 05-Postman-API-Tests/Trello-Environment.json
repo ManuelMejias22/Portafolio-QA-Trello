@@ -1,0 +1,70 @@
+{
+	"id": "af31092c-c7f1-4b0f-b9eb-b5d6489e312c",
+	"name": "Trello-QA",
+	"values": [
+		{
+			"key": "Key",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Url-Base",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Id-Tablero",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Id-Lista-1",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "posicion_tarjeta_1",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Id_tarjeta_1",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Id_tarjeta_2",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Id_tarjeta_3",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Id_tarjeta_4",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-09-08T10:15:03.559Z",
+	"_postman_exported_using": "Postman/12.27.1"
+}
