@@ -30,7 +30,7 @@ El proyecto está organizado de la siguiente manera para facilitar su revisión:
 * `01-Test-plan.pdf`: Plan de pruebas formales que define el alcance, estrategia, criterios de aceptación/rechazo y los entornos de prueba.
 * `02-Matriz-de-trazabilidad.xlsx`: Matriz que vincula cada etapa de negocio extraída de las Historias de Usuario con sus respectivos Casos de Prueba (TC), garantizando una cobertura del 100%.
 * `03-Casos-de-pruebas.xlsx`: Conjunto completo de Casos de Prueba detallados con precondiciones, pasos secuenciales, datos de prueba y resultados esperados.
-* `04-Reporte-de-defecto.xlsx`[Ver sin descargar](https://docs.google.com/spreadsheets/d/1aMTHkIs_IzX5nYVL14SggW9RNVGulbsXgZ_JvP7oy2U/edit?gid=1894807275#gid=1894807275)): Registro formal de defectos con evidencias combinadas (Postman y UI de Trello), documentando 5 bugs hallados en el ciclo de pruebas: un fallo de UX en la interfaz y 4 inconsistencias de servidor donde la API responde con 200 OK procesando títulos vacíos o de puros espacios en blanco.
+* `04-Reporte-de-defecto.xlsx`[Ver sin descargar]((https://docs.google.com/spreadsheets/d/1aMTHkIs_IzX5nYVL14SggW9RNVGulbsXgZ_JvP7oy2U/edit?gid=1894807275#gid=1894807275)): Registro formal de defectos con evidencias combinadas (Postman y UI de Trello), documentando 5 bugs hallados en el ciclo de pruebas: un fallo de UX en la interfaz y 4 inconsistencias de servidor donde la API responde con 200 OK procesando títulos vacíos o de puros espacios en blanco.
 * `05-Postman-API-Tests/`: Colección exportada (`Trello-API-Testing.json`) y archivo de variables de entorno (`Trello-Environment.json`). Incluye pruebas de integración para endpoints de tarjetas y listas (POST, PUT, DELETE, GET), aserciones dinámicas y scripts de manejo de datos.
 
 ---
