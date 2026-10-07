@@ -26,11 +26,11 @@ Adicionalmente, el proyecto integra una suite de **Testing de API REST con Postm
 
 El proyecto está organizado de la siguiente manera para facilitar su revisión:
 
-* `00-Épica-gestión-de-tarjetas.pdf`: Documento de especificación de requisitos de negocio que detalla la Épica y las tres Historias de Usuario con sus respectivos Criterios de Aceptación.
-* `01-Test-plan.pdf`: Plan de pruebas formales que define el alcance, estrategia, criterios de aceptación/rechazo y los entornos de prueba.
-* `02-Matriz-de-trazabilidad.xlsx`: Matriz que vincula cada etapa de negocio extraída de las Historias de Usuario con sus respectivos Casos de Prueba (TC), garantizando una cobertura del 100%.
-* `03-Casos-de-pruebas.xlsx`: Conjunto completo de Casos de Prueba detallados con precondiciones, pasos secuenciales, datos de prueba y resultados esperados.
-* `04-Reporte-de-defecto.xlsx`([Ver sin descargar](https://docs.google.com/spreadsheets/d/1aMTHkIs_IzX5nYVL14SggW9RNVGulbsXgZ_JvP7oy2U/edit?gid=1894807275#gid=1894807275)): Registro formal de defectos con evidencias combinadas (Postman y UI de Trello), documentando 5 bugs hallados en el ciclo de pruebas: un fallo de UX en la interfaz y 4 inconsistencias de servidor donde la API responde con 200 OK procesando títulos vacíos o de puros espacios en blanco.
+* `00-Épica-gestión-de-tarjetas.pdf` [Ver aquí](https://docs.google.com/document/d/15W4QbsE5T55t8xGVKW34-JzEB_kUY3Ap7LPOLXeLGhY/edit?tab=t.0#heading=h.ggdon4nd2cf8): Documento de especificación de requisitos de negocio que detalla la Épica y las tres Historias de Usuario con sus respectivos Criterios de Aceptación.
+* `01-Test-plan.pdf` [Ver aquí](https://docs.google.com/document/d/14BUAgIEK80j-v8A-JrTLHG0K-XKSxSv8dS79wk6NEFg/edit?tab=t.0#heading=h.bpjy6vtoeo6x): Plan de pruebas formales que define el alcance, estrategia, criterios de aceptación/rechazo y los entornos de prueba.
+* `02-Matriz-de-trazabilidad.xlsx` [Ver aquí](https://docs.google.com/spreadsheets/d/1emWDmUSTCBJpC9F-fIn9sFQVqUKHdJjkwu-kDC7v5rQ/edit?gid=0#gid=0): Matriz que vincula cada etapa de negocio extraída de las Historias de Usuario con sus respectivos Casos de Prueba (TC), garantizando una cobertura del 100%.
+* `03-Casos-de-pruebas.xlsx` [Ver aquí](https://docs.google.com/spreadsheets/d/18u2ZL_RS0PpIM4nvLEM-UC_E6cYZhWX2VROqhjRHbAk/edit?gid=0#gid=0): Conjunto completo de Casos de Prueba detallados con precondiciones, pasos secuenciales, datos de prueba y resultados esperados.
+* `04-Reporte-de-defecto.xlsx` [Ver aquí](https://docs.google.com/spreadsheets/d/1aMTHkIs_IzX5nYVL14SggW9RNVGulbsXgZ_JvP7oy2U/edit?gid=1894807275#gid=1894807275): Registro formal de defectos con evidencias combinadas (Postman y UI de Trello), documentando 5 bugs hallados en el ciclo de pruebas: un fallo de UX en la interfaz y 4 inconsistencias de servidor donde la API responde con 200 OK procesando títulos vacíos o de puros espacios en blanco.
 * `05-Postman-API-Tests/`: Colección exportada (`Trello-API-Testing.json`) y archivo de variables de entorno (`Trello-Environment.json`). Incluye pruebas de integración para endpoints de tarjetas y listas (POST, PUT, DELETE, GET), aserciones dinámicas y scripts de manejo de datos.
 
 ---
